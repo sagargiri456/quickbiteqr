@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickBiteQR - Revolutionizing Restaurant Ordering</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Toggle -->
+    <div class="nav-toggle">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="hero-content">
+            <h1 class="logo">QuickBiteQR</h1>
+            <p class="tagline">Revolutionizing Restaurant Ordering – One Table at a Time.</p>
+            
+            <div class="countdown">
+                <div class="countdown-box">
+                    <div class="countdown-value" id="days">30</div>
+                    <div class="countdown-label">Days</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-value" id="hours">00</div>
+                    <div class="countdown-label">Hours</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-value" id="minutes">00</div>
+                    <div class="countdown-label">Minutes</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-value" id="seconds">00</div>
+                    <div class="countdown-label">Seconds</div>
+                </div>
+            </div>
+            
+            <button id="waitlist-btn" class="btn">Join the Waitlist</button>
+        </div>
+    </section>
+    
+    <!-- Customer Journey -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">For Your Customers</h2>
+            <p class="section-subtitle">A seamless digital ordering experience right at their table</p>
+            
+            <div class="mockup-container">
+                <div class="mockup-card">
+                    <div class="mockup-header">
+                        <h3 class="mockup-title">Scan & Order</h3>
+                        <p class="mockup-subtitle">Customers scan the table QR to start ordering</p>
+                    </div>
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <!-- Scanner Screen -->
+                            <div class="customer-screen active" id="scanner-screen">
+                                <div class="scanner">
+                                    <h1 style="color: var(--text-gray);">Tap anywhere to scan QR code</h1>
+                                    <div class="scanner-frame" style="border-radius: 10px; overflow: hidden;">
+                                        <img src="qr.png" alt="QR Scanner Frame" style="width: 100%; height: auto;" />
+                                    </div>
+                                </div>
+                                <p style="position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; color: var(--text-gray);">Tap to scan QR code</p>
+                            </div>
+                            
+                            <!-- Menu Screen -->
+                            <div class="customer-screen" id="menu-screen">
+                                <div class="screen-header">
+                                    <button class="back-btn"><i class="fas fa-arrow-left"></i></button>
+                                    <div class="screen-title">Menu</div>
+                                    <div class="cart-icon" id="cart-icon">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        <span class="cart-badge" id="cart-count">0</span>
+                                    </div>
+                                </div>
+                                <div class="screen-content">
+                                    <div class="menu-categories">
+                                        <button class="category-btn active" data-category="starters">Starters</button>
+                                        <button class="category-btn" data-category="mains">Mains</button>
+                                        <button class="category-btn" data-category="drinks">Drinks</button>
+                                    </div>
+                                    
+                                    <div class="menu-items" id="menu-items-container">
+                                        <!-- Items populated dynamically -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Cart Screen -->
+                            <div class="customer-screen" id="cart-screen">
+                                <div class="screen-header">
+                                    <button class="back-btn"><i class="fas fa-arrow-left"></i></button>
+                                    <div class="screen-title">Your Order</div>
+                                    <div class="cart-icon">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        <span class="cart-badge" id="cart-count-review">0</span>
+                                    </div>
+                                </div>
+                                <div class="screen-content">
+                                    <div class="cart-items" id="cart-items">
+                                        <!-- Items populated here -->
+                                    </div>
+                                    
+                                    <div class="form-group" style="margin-top: 12px;">
+                                        <input type="number" id="table-number" placeholder="Table Number" min="1" value="5">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <textarea placeholder="Special instructions..." rows="2" style="width: 100%; padding: 10px; background: rgba(26, 26, 26, 0.5); border: 1px solid var(--glass-border); border-radius: 10px; color: var(--text-light); font-size: 0.85rem;"></textarea>
+                                    </div>
+                                    
+                                    <div class="action-btn">
+                                        <button id="continue-to-payment" class="btn" style="width: 100%; padding: 12px;">Complete the Order</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Payment Screen -->
+                            <div class="customer-screen" id="payment-screen">
+                                <div class="screen-header">
+                                    <button class="back-btn"><i class="fas fa-arrow-left"></i></button>
+                                    <div class="screen-title">Select Payment</div>
+                                </div>
+                                <div class="screen-content">
+                                    <div class="payment-options">
+                                        <div class="payment-option" data-method="pay-at-table">
+                                            <div class="payment-icon">
+                                                <i class="fas fa-qrcode"></i>
+                                            </div>
+                                            <div>
+                                                <h4>Pay at Table</h4>
+                                                <p>Pay your server directly</p>
+                                            </div>
+                                        </div>
+                                        <div class="payment-option" data-method="online-payment">
+                                            <div class="payment-icon">
+                                                <i class="fas fa-credit-card"></i>
+                                            </div>
+                                            <div>
+                                                <h4>Online Payment</h4>
+                                                <p>Secure card or UPI payment</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="action-btn">
+                                        <button id="confirm-payment" class="btn" style="width: 100%; padding: 12px;">Confirm Payment</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Confirmation Screen -->
+                            <div class="customer-screen" id="confirmation-screen">
+                                <div class="confirmation-screen">
+                                    <div class="checkmark">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <h3>Order Confirmed!</h3>
+                                    <p>Your order has been placed successfully</p>
+                                    <p style="margin-top: 12px;">Estimated time: <strong>20 minutes</strong></p>
+                                    <button class="btn home-btn" id="new-order-btn">Place Another Order</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Restaurant Dashboard -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">For Restaurant Owners</h2>
+            <p class="section-subtitle">Powerful tools to manage your restaurant operations</p>
+            
+            <div class="mockup-container">
+                <div class="mockup-card">
+                    <div class="mockup-header">
+                        <h3 class="mockup-title">Dashboard Management</h3>
+                        <p class="mockup-subtitle">Control orders, menus and QR codes from one place</p>
+                    </div>
+                    <div class="phone-mockup dashboard-phone">
+                        <div class="phone-screen">
+                            <!-- Dashboard Menu Screen -->
+                            <div class="dashboard-screen active">
+                                <div class="screen-header">
+                                    <div class="screen-title">Dashboard</div>
+                                </div>
+                                <div class="screen-content">
+                                    <div class="dashboard-menu">
+                                        <button class="dashboard-option" data-screen="1">
+                                            <i class="fas fa-fire"></i>
+                                            <h4>Live Orders</h4>
+                                            <p>View and manage incoming orders</p>
+                                        </button>
+                                        <button class="dashboard-option" data-screen="2">
+                                            <i class="fas fa-edit"></i>
+                                            <h4>Edit Menu</h4>
+                                            <p>Update menu items and prices</p>
+                                        </button>
+                                        <button class="dashboard-option" data-screen="3">
+                                            <i class="fas fa-qrcode"></i>
+                                            <h4>Generate QR</h4>
+                                            <p>Create QR codes for tables</p>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Live Orders Screen -->
+                            <div class="dashboard-screen">
+                                <div class="screen-header">
+                                    <button class="back-btn"><i class="fas fa-arrow-left"></i></button>
+                                    <div class="screen-title">Live Orders</div>
+                                </div>
+                                <div class="screen-content">
+                                    <div class="order-list">
+                                        <div class="order-item">
+                                            <div class="order-header">
+                                                <div class="order-table">Table #5</div>
+                                                <button class="status-btn pending">Pending</button>
+                                            </div>
+                                            <div class="order-items">Garlic Bread, Margherita Pizza</div>
+                                            <div class="order-time">5 min ago</div>
+                                        </div>
+                                        <div class="order-item">
+                                            <div class="order-header">
+                                                <div class="order-table">Table #2</div>
+                                                <button class="status-btn in-progress">In Progress</button>
+                                            </div>
+                                            <div class="order-items">Caesar Salad, Grilled Salmon</div>
+                                            <div class="order-time">12 min ago</div>
+                                        </div>
+                                        <div class="order-item">
+                                            <div class="order-header">
+                                                <div class="order-table">Table #8</div>
+                                                <button class="status-btn completed">Completed</button>
+                                            </div>
+                                            <div class="order-items">Burger, Fries, Coke</div>
+                                            <div class="order-time">25 min ago</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Menu Editor Screen -->
+                            <div class="dashboard-screen">
+                                <div class="screen-header">
+                                    <button class="back-btn"><i class="fas fa-arrow-left"></i></button>
+                                    <div class="screen-title">Menu Editor</div>
+                                </div>
+                                <div class="screen-content">
+                                    <div class="menu-editor">
+                                        <div class="menu-editor-item">
+                                            <div class="editor-row">
+                                                <input type="text" value="Garlic Bread">
+                                                <input type="text" value="$5.99">
+                                            </div>
+                                            <div class="editor-row">
+                                                <input type="text" value="With herb butter" style="flex: 2;">
+                                                <select>
+                                                    <option>Available</option>
+                                                    <option>Unavailable</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="menu-editor-item">
+                                            <div class="editor-row">
+                                                <input type="text" value="Margherita Pizza">
+                                                <input type="text" value="$14.99">
+                                            </div>
+                                            <div class="editor-row">
+                                                <input type="text" value="Classic tomato and mozzarella" style="flex: 2;">
+                                                <select>
+                                                    <option>Available</option>
+                                                    <option>Unavailable</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="menu-editor-item">
+                                            <div class="editor-row">
+                                                <input type="text" value="Grilled Salmon">
+                                                <input type="text" value="$18.99">
+                                            </div>
+                                            <div class="editor-row">
+                                                <input type="text" value="With seasonal vegetables" style="flex: 2;">
+                                                <select>
+                                                    <option>Available</option>
+                                                    <option>Unavailable</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="action-btn">
+                                        <button id="save-menu-btn" class="btn" style="width: 100%; padding: 12px;">Save Changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- QR Management Screen -->
+                            <div class="dashboard-screen">
+                                <div class="screen-header">
+                                    <button class="back-btn"><i class="fas fa-arrow-left"></i></button>
+                                    <div class="screen-title">QR Management</div>
+                                </div>
+                                <div class="screen-content">
+                                    <div class="qr-controls">
+                                        <h4>Generate Table QR Code</h4>
+                                        <p>Enter table number to create a unique QR code</p>
+                                        
+                                        <input type="number" class="table-input" min="1" placeholder="Table Number" value="5">
+                                        
+                                        <button id="generate-qr" class="btn">Generate QR</button>
+                                        
+                                        <div id="qr-container" style="margin-top: 20px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Call to Action -->
+    <section id="cta" class="section">
+        <div class="container">
+            <h2>QuickBiteQR launches in 30 days.<br>Be the first to modernize your restaurant.</h2>
+            <button id="cta-btn" class="btn" style="margin-top: 25px; padding: 14px 35px; font-size: 1.1rem; box-shadow: 0 0 25px rgba(58, 134, 255, 0.5);">Get Early Access</button>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">QuickBiteQR</div>
+                <p class="footer-tagline">Revolutionizing Restaurant Ordering – One Table at a Time.</p>
+                
+                <a href="mailto:contact@quickbiteqr.com" class="contact-email">contact@quickbiteqr.com</a>
+                
+                <div class="social-icons">
+                    <a href="https://www.linkedin.com/company/quickbiteqr/" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/quickbiteqr?igsh=MWFiMGMxMGlwcHF1Zw==" class="social-icon"><i class="fab fa-instagram"></i></a>
+                </div>
+                
+                <p class="copyright">Made with ❤️ by Apparotech Innovation</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Waitlist Popup -->
+    <div id="waitlist-popup">
+        <div class="popup-content">
+            <button class="close-btn"><i class="fas fa-times"></i></button>
+            <form id="waitlist-form" action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="bf7e7dd7-48aa-436f-acdf-09028626150b">
+                <h3>Join Our Waitlist</h3>
+                <p>Get early access and exclusive launch offers</p>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                <button type="submit" class="btn" style="width: 100%; padding: 12px;">Notify Me at Launch</button>
+            </form>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
