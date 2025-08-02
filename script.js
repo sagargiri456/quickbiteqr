@@ -1,21 +1,28 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Countdown Timer
-    const launchDate = new Date();
+    const launchDate = new Date('2025-08-01T00:00:00');;
     launchDate.setDate(launchDate.getDate() + 30);
     
+    let prevTime = {};
+
     function updateCountdown() {
         const now = new Date();
         const diff = launchDate - now;
-        
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-        
-        document.getElementById('days').textContent = days.toString().padStart(2, '0');
-        document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-        document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+
+        const time = {
+            days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+            hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+            minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+            seconds: Math.floor((diff % (1000 * 60)) / 1000),
+        };
+
+        for (const unit in time) {
+            if (time[unit] !== prevTime[unit]) {
+                document.getElementById(unit).textContent = time[unit].toString().padStart(2, '0');
+            }
+        }
+
+        prevTime = time;
     }
     setInterval(updateCountdown, 1000);
     updateCountdown();
