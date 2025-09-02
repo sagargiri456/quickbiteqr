@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Countdown Timer
     const launchDate = new Date('2025-08-01T00:00:00');;
-    launchDate.setDate(launchDate.getDate() + 30);
+    launchDate.setDate(launchDate.getDate() + 37);
     
     let prevTime = {};
 
